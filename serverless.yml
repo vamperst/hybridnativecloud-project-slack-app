@@ -1,0 +1,41 @@
+service: s3-to-slack-ecr-pipeline
+provider:
+  name: aws
+  runtime: python3.8
+  region: us-east-1
+
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: 
+        - "arn:aws:s3:::codepipeline-us-east-1-*"
+        - "arn:aws:s3:::codepipeline-us-east-1-*/*"
+
+package:
+  exclude:
+    - layer/**
+
+layers:
+  slack:
+    path: layer
+    description: "dependencies slack"
+
+
+functions:
+  hello:
+    handler: handler.hello
+    environment:
+      GROUP: rafabarbosa
+    layers:
+      - {Ref: SlackLambdaLayer}
+    events:
+      - s3:
+         bucket: codepipeline-us-east-1-483417879513
+         event: s3:ObjectCreated:*
+         rules:
+            - prefix: hackathon-CI-app/BuildArtif
+         existing: true
+            
+
