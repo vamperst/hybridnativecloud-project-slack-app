@@ -1,1 +1,2 @@
-slackweb
+boto3
+slackclient 
