@@ -17,14 +17,14 @@ s3 = boto3.client('s3',)
 client = WebClient(token="<TOKEN DONTPAD>")
 
 def sendMessageToSlack(message,username):
-      try:
-    response = client.chat_postMessage(
-        channel='#atividade-slack',
-        text=message,
-        username=username,)        
-  except SlackApiError as e:
+    try:
+        response = client.chat_postMessage(
+            channel='#atividade-slack',
+            text=message,
+            username=username,)        
+    except SlackApiError as e:
     # You will get a SlackApiError if "ok" is False
-    print(f"Got an error: {e.response['error']}")
+        print(f"Got an error: {e.response['error']}")
 
 def randomString(stringLength=10):
     letters = string.ascii_lowercase
